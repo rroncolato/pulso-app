@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import {
   Plus, Clock, CheckCircle2, Circle,
@@ -37,10 +37,12 @@ function progresso(p: Projeto): number {
 }
 
 export default function DashboardPage() {
-  const { projetos, selecionarProjeto, deletarProjeto } = useProjetoStore();
+  const { projetos, selecionarProjeto, deletarProjeto, carregarProjetos, carregando } = useProjetoStore();
   const [modalAberto, setModalAberto] = useState(false);
   const [deletando, setDeletando] = useState<{ id: string; titulo: string } | null>(null);
   const router = useRouter();
+
+  useEffect(() => { carregarProjetos(); }, []);
 
   function abrirProjeto(id: string) {
     selecionarProjeto(id);

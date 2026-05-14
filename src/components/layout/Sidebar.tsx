@@ -1,17 +1,41 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { LayoutDashboard, FolderOpen, Zap } from "lucide-react";
+import { usePathname, useRouter } from "next/navigation";
+import { LayoutDashboard, Zap, LogOut, ShieldCheck } from "lucide-react";
 import { cn } from "@/lib/utils";
-
-const nav = [
-  { href: "/dashboard", label: "Caderno", icon: LayoutDashboard },
-  { href: "/dashboard", label: "Projetos", icon: FolderOpen },
-];
+import { createClient } from "@/lib/supabase/client";
+import { useEffect, useState } from "react";
 
 export function Sidebar() {
   const pathname = usePathname();
+  const router = useRouter();
+  const [user, setUser] = useState<{ nome: string; email: string } | null>(null);
+  const isAdmin = user?.email === process.env.NEXT_PUBLIC_ADMIN_EMAIL;
+
+  useEffect(() => {
+    const supabase = createClient();
+    supabase.auth.getUser().then(({ data: { user } }) => {
+      if (user) {
+        setUser({
+          nome: user.user_metadata?.nome ?? user.email?.split("@")[0] ?? "Usuário",
+          email: user.email ?? "",
+        });
+      }
+    });
+  }, []);
+
+  async function sair() {
+    const supabase = createClient();
+    await supabase.auth.signOut();
+    router.push("/auth/login");
+    router.refresh();
+  }
+
+  const nav = [
+    { href: "/dashboard", label: "Caderno", icon: LayoutDashboard },
+    ...(isAdmin ? [{ href: "/admin", label: "Todos os clientes", icon: ShieldCheck }] : []),
+  ];
 
   return (
     <aside className="w-52 min-h-screen border-r border-border flex flex-col bg-card shrink-0">
@@ -46,16 +70,21 @@ export function Sidebar() {
         ))}
       </nav>
 
-      <div className="px-5 py-4 border-t border-border">
-        <div className="flex items-center gap-2">
-          <div className="w-6 h-6 rounded-full bg-muted flex items-center justify-center">
-            <span className="text-[10px] font-bold text-muted-foreground">R</span>
+      {/* User + logout */}
+      <div className="px-4 py-4 border-t border-border">
+        {user && (
+          <div className="mb-3">
+            <p className="text-xs font-medium text-foreground leading-none truncate">{user.nome}</p>
+            <p className="text-[10px] text-muted-foreground mt-0.5 truncate">{user.email}</p>
           </div>
-          <div>
-            <p className="text-xs font-medium text-foreground leading-none">Roncolato</p>
-            <p className="text-[10px] text-muted-foreground mt-0.5">MVP v0.1</p>
-          </div>
-        </div>
+        )}
+        <button
+          onClick={sair}
+          className="flex items-center gap-2 text-xs text-muted-foreground hover:text-destructive transition-colors w-full"
+        >
+          <LogOut className="w-3.5 h-3.5" />
+          Sair
+        </button>
       </div>
     </aside>
   );

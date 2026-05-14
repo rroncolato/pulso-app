@@ -27,9 +27,9 @@ export function NovoProjeto({ aberto, onFechar }: Props) {
   const { criarProjeto } = useProjetoStore();
   const router = useRouter();
 
-  function criar() {
+  async function criar() {
     if (!titulo.trim()) return;
-    const projeto = criarProjeto(titulo.trim(), tipologia);
+    const projeto = await criarProjeto(titulo.trim(), tipologia);
     onFechar();
     setTitulo("");
     router.push(`/projeto/${projeto.id}/mapa`);
