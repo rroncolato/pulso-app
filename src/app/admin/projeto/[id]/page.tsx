@@ -72,28 +72,36 @@ export default function AdminProjetoPage() {
         @media print {
           * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
           .no-print { display: none !important; }
-
-          body, html { margin: 0; padding: 0; }
+          body, html { margin: 0; padding: 0; background: white; }
 
           .print-area {
             background: white !important;
-            color: #111 !important;
+            color: #1a1a1a !important;
             padding: 0 !important;
             max-width: 100% !important;
           }
-          .print-area * { color: inherit !important; border-color: #e5e7eb !important; }
-          .print-card { background: #f9fafb !important; }
-          .print-igor-card { background: #f9fafb !important; border: 1px solid #e5e7eb !important; }
-          .print-lente-ok { background: #f0fdf4 !important; border-color: #bbf7d0 !important; }
-          .print-lente-warn { background: #fffbeb !important; border-color: #fde68a !important; }
-          .print-rec { background: #fafafa !important; border: 2px solid #111 !important; }
-          .print-bar { background: #e5e7eb !important; }
-          .print-bar-fill { background: #111 !important; }
+
+          .print-area * { color: inherit !important; }
+          .print-area [class*="border"] { border-color: #e5e7eb !important; }
+
+          .print-card { background: #f8f8f8 !important; border: 1px solid #ebebeb !important; }
+          .print-igor-card { background: #f8f8f8 !important; border: 1px solid #ebebeb !important; }
+          .print-lente-ok { background: #f0fdf4 !important; border-color: #86efac !important; }
+          .print-lente-warn { background: #fffbeb !important; border-color: #fcd34d !important; }
+
+          .print-rec {
+            background: #f5f5f5 !important;
+            border: 1.5px solid #c8c8c8 !important;
+            border-radius: 12px !important;
+          }
+
+          .print-bar { background: #ebebeb !important; }
+          .print-bar-fill { background: #4b4b4b !important; }
 
           .print-capa {
-            padding-bottom: 24px;
-            margin-bottom: 24px;
-            border-bottom: 1px solid #e5e7eb !important;
+            padding-bottom: 20px;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #e5e7eb;
           }
 
           .print-nome-page {
@@ -101,7 +109,7 @@ export default function AdminProjetoPage() {
             page-break-before: always;
             break-inside: avoid;
             page-break-inside: avoid;
-            padding-top: 32px;
+            padding-top: 28px;
             border-bottom: none !important;
             margin-bottom: 0 !important;
           }
@@ -109,13 +117,13 @@ export default function AdminProjetoPage() {
           .print-pagina-final {
             break-before: page;
             page-break-before: always;
-            padding-top: 32px;
+            padding-top: 28px;
           }
 
           .print-rodape {
-            margin-top: 32px;
-            padding-top: 16px;
-            border-top: 1px solid #e5e7eb !important;
+            margin-top: 28px;
+            padding-top: 14px;
+            border-top: 1px solid #e5e7eb;
           }
         }
       `}</style>
