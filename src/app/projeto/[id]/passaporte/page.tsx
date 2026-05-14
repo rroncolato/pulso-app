@@ -46,52 +46,60 @@ export default function PassaportePage() {
     <>
       <style>{`
         @media print {
+          * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
           .no-print { display: none !important; }
+
+          body, html { margin: 0; padding: 0; }
+
           .print-area {
             background: white !important;
-            color: black !important;
+            color: #111 !important;
             padding: 0 !important;
             max-width: 100% !important;
           }
-          .print-area * { color: inherit !important; border-color: #e5e7eb !important; }
+          .print-area * {
+            color: inherit !important;
+            border-color: #e5e7eb !important;
+          }
           .print-card { background: #f9fafb !important; }
-          .print-igor-card { background: white !important; border: 1px solid #e5e7eb !important; }
+          .print-igor-card { background: #f9fafb !important; border: 1px solid #e5e7eb !important; }
           .print-lente-ok { background: #f0fdf4 !important; border-color: #bbf7d0 !important; }
           .print-lente-warn { background: #fffbeb !important; border-color: #fde68a !important; }
-          .print-rec { background: white !important; border: 2px solid black !important; }
+          .print-rec { background: #fafafa !important; border: 2px solid #111 !important; }
           .print-bar { background: #e5e7eb !important; }
-          .print-bar-fill { background: black !important; }
+          .print-bar-fill { background: #111 !important; }
 
-          /* Capa na primeira página */
           .print-capa {
-            page-break-after: always;
-            padding: 60px 50px;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
+            padding-bottom: 24px;
+            margin-bottom: 24px;
+            border-bottom: 1px solid #e5e7eb !important;
           }
 
-          /* Cada nome ocupa uma página */
           .print-nome-page {
+            break-before: page;
             page-break-before: always;
-            page-break-after: always;
+            break-inside: avoid;
             page-break-inside: avoid;
-            padding: 50px;
-            min-height: 100vh;
-            box-sizing: border-box;
+            padding-top: 32px;
             border-bottom: none !important;
-            margin: 0 !important;
+            margin-bottom: 0 !important;
           }
 
-          /* Recomendação final em página própria */
+          .print-nome-page:first-of-type {
+            break-before: auto;
+            page-break-before: auto;
+          }
+
           .print-pagina-final {
+            break-before: page;
             page-break-before: always;
-            padding: 60px 50px;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
+            padding-top: 32px;
+          }
+
+          .print-rodape {
+            margin-top: 32px;
+            padding-top: 16px;
+            border-top: 1px solid #e5e7eb !important;
           }
         }
       `}</style>
@@ -295,7 +303,7 @@ export default function PassaportePage() {
           )}
 
           {/* Rodapé */}
-          <div className="mt-12 pt-6 border-t border-border text-center">
+          <div className="print-rodape mt-12 pt-6 border-t border-border text-center">
             <p className="text-xs text-muted-foreground">
               Gerado pelo Pulso · Estúdio Roncolato · {new Date().getFullYear()}
             </p>
