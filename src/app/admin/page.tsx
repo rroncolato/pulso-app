@@ -2,10 +2,12 @@
 
 import { useEffect, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
-import { ShieldCheck, Sparkles, Clock, CheckCircle2 } from "lucide-react";
+import { ShieldCheck, Sparkles, ArrowLeft } from "lucide-react";
 import { cn } from "@/lib/utils";
 import type { Projeto } from "@/types";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
 
 interface ProjetoAdmin extends Projeto {
   clienteNome: string;
@@ -39,6 +41,9 @@ export default function AdminPage() {
   return (
     <div className="px-10 py-10 max-w-4xl mx-auto">
       <div className="flex items-center gap-3 mb-8">
+        <Button variant="ghost" size="icon" onClick={() => router.push("/dashboard")} className="shrink-0">
+          <ArrowLeft className="w-4 h-4" />
+        </Button>
         <div className="w-8 h-8 rounded-lg bg-primary/20 flex items-center justify-center">
           <ShieldCheck className="w-4 h-4 text-primary" />
         </div>
@@ -63,7 +68,8 @@ export default function AdminPage() {
 
       <div className="space-y-3">
         {projetos.map((projeto) => (
-          <div key={projeto.id} className="bg-card border border-border rounded-2xl p-5">
+          <Link key={projeto.id} href={`/admin/projeto/${projeto.id}`} className="block">
+          <div className="bg-card border border-border rounded-2xl p-5 hover:border-primary/50 hover:bg-card/80 transition-colors cursor-pointer">
             <div className="flex items-start justify-between gap-4">
               <div>
                 <div className="flex items-center gap-2 mb-1">
@@ -98,6 +104,7 @@ export default function AdminPage() {
               </div>
             </div>
           </div>
+          </Link>
         ))}
 
         {projetos.length === 0 && (
